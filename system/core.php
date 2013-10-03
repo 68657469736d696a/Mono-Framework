@@ -150,8 +150,7 @@ class core {
         
         //If enabled, load the debugger
         if($this->mono['debug']){ 
-           $debug = new debug($this->mono);
-           echo $debug->getDebug();
+           echo $this->mono['debugObj']->getDebug();
         }
     }
     

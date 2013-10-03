@@ -35,6 +35,11 @@ if ($systemDir = opendir($mono['systemDir'])) {
     trigger_error('Couldn\'t load the system files');
 }
 
+//Create the debug obect
+//everything above this line is not included in the debug console
+$debug = new debug($mono);
+$mono['debugObj'] = $debug;
+
 //Lets see if the cache is turned on
 if($mono['cache']){
     //Chech if it is an ajax request and if ajax cache is enabled
@@ -49,8 +54,7 @@ if($mono['cache']){
                 $mono['fromCache'] = true;
 
                 //Start the debugger                
-                $debug = new debug($mono);
-                echo $debug->getDebug();
+                echo $mono['debugObj']->getDebug();
            }
            //Stop everything
            die();
