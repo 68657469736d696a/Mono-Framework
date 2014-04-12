@@ -121,6 +121,17 @@ class debug{
         return $time;
     }
     
+    private function getIncludedFiles(){
+        $output = array();
+        $files = get_included_files();
+        foreach($files as $file){
+            $output[] = str_replace($this->mono['siteDir'], '', $file);
+        }
+        
+        return $output;
+
+    }
+    
     /**
      * Place comment markers around the input string
      * 
@@ -146,7 +157,7 @@ class debug{
         if($this->mono['fromCache']){
             $console .= '<p>This page is loaded from the cache. Original file: '.$this->mono['cacheFilename'] .'.php</p>';
         }else{
-            $console .= '<p>This page is not loaded from the cache</p>';
+            $console .= '<p>This page is not loaded from the cache</p>'. $this->mono['fromCache'];
         }
         
         if(count($this->mono['errorLog']) != 0){
@@ -164,7 +175,10 @@ class debug{
         
         $console .= '<b>Files included:</b>';
         $console .= '<ul>';
-        $console .= ' <li>'. implode("</li>\n<li>", get_included_files()) .'</li>';
+        
+        foreach($this->getIncludedFiles() as $file){
+            $console .= ' <li>'.$file.'</li>';
+        }
         $console .= '</ul>';
         
         $console .= '</div>';

@@ -22,6 +22,9 @@ $mono['replaceURIChars'] = '_';
 //Enable or disable Cache (true = enabled, false = disabled)
 $mono['cache'] = false;
 
+//Force the following pages to be cached, despite the previous value
+$mono['cacheForce'][] = array('home', 'index');  //array(controller, method)
+
 //Cache lifetime (in seconds)
 $mono['cacheTime'] = 10;
 
@@ -37,7 +40,6 @@ $mono['debugAjax'] = false;
 //true = Console ail be displayd
 //false = Console will be invisible (commented out) information will be available trough the 'view-source' functionality of your browser
 $mono['debugSilent'] = false;
-
 
 //Define custom regex routes. These will overrule the /controller/method structure
 $mono['routes'][] = array('regex' => '/example\/+([0-9])/',         //the regex route

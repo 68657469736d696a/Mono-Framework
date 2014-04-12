@@ -35,8 +35,21 @@ if ($systemDir = opendir($mono['systemDir'])) {
     trigger_error('Couldn\'t load the system files');
 }
 
+//Load the URI class and define controller, method an parameters
+$uri        = new uri($mono);
+$controller = $uri->segments[0];
+$method     = $uri->segments[1];
+$parameters = array_slice($uri->segments, 2);
+
+//Check if cache need to be forced
+foreach($mono['cacheForce'] as $cacheForce){
+    if($cacheForce[0] == $controller && $cacheForce[1] == $method){
+        $mono['cache'] = true;
+    }
+}
+
 //Create the debug obect
-//everything above this line is not included in the debug console
+//(everything above this line is not included in the debug console)
 $debug = new debug($mono);
 $mono['debugObj'] = $debug;
 
@@ -44,7 +57,6 @@ $mono['debugObj'] = $debug;
 if($mono['cache']){
     //Chech if it is an ajax request and if ajax cache is enabled
     if(!$mono['ajaxRequest'] OR ($mono['ajaxRequest'] AND $mono['cacheAjax'])){
-        
         //Check if the requested page is available in cache
         $cache = new cache($mono);
         $mono['cacheFilename'] = md5($mono['pageName']. $mono['ajaxRequest']);
@@ -54,19 +66,13 @@ if($mono['cache']){
                 $mono['fromCache'] = true;
 
                 //Start the debugger                
-                echo $mono['debugObj']->getDebug();
+                echo( $mono['debugObj']->getDebug() );
            }
            //Stop everything
            die();
         }
     }
 }
-
-//Load the URI class and define controller, method an parameters
-$uri        = new uri($mono);
-$controller = $uri->segments[0];
-$method     = $uri->segments[1];
-$parameters = array_slice($uri->segments, 2);
 
 //Load the controller
 $controllerFile = $mono['siteDir']. 'sites/controllers/'.$mono['siteName'].'/'. $controller. '.php';
