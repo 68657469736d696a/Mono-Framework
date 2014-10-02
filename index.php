@@ -42,9 +42,11 @@ $method     = $uri->segments[1];
 $parameters = array_slice($uri->segments, 2);
 
 //Check if cache need to be forced
-foreach($mono['cacheForce'] as $cacheForce){
-    if($cacheForce[0] == $controller && $cacheForce[1] == $method){
-        $mono['cache'] = true;
+if(isset($mono['cacheForce'])){
+    foreach($mono['cacheForce'] as $cacheForce){
+        if($cacheForce[0] == $controller && $cacheForce[1] == $method){
+            $mono['cache'] = true;
+        }
     }
 }
 
